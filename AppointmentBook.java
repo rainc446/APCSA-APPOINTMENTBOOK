@@ -11,12 +11,12 @@ public class AppointmentBook {
      * Preconditions: 1 <= period <= 8; 0 <= minute <= 59
      */
     private boolean isMinuteFree(int period, int minute) {
-        return schedule[period-1][minute];
+        return schedule[period][minute];
         /* implementation not shown */ }
 
     public void printPeriod(int period){
-        for (int i = 0; i < schedule[period - 1].length; i++){
-            System.out.println(i + " " + schedule[period - 1][i]);
+        for (int i = 0; i < schedule[period].length; i++){
+            System.out.println(i + " " + schedule[period][i]);
         }
     }
 
@@ -28,7 +28,7 @@ public class AppointmentBook {
      */
     private void reserveBlock(int period, int startMinute, int duration) {
         for (int i = startMinute; i < startMinute + duration; i++){
-            schedule[period-1][i] = false;
+            schedule[period][i] = false;
         }
         /* implementation not shown */ }
 
@@ -64,7 +64,7 @@ public class AppointmentBook {
      */
     public boolean makeAppointment(int startPeriod, int endPeriod, int duration){
         int startDuration;
-        for (int r = startPeriod - 1; r < endPeriod; r++){
+        for (int r = startPeriod; r < endPeriod; r++){
             startDuration = findFreeBlock(r, duration);
             if (startDuration != 1){
                 reserveBlock(r, startDuration, duration);
