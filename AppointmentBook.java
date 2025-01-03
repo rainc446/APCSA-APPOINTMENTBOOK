@@ -11,12 +11,12 @@ public class AppointmentBook {
      * Preconditions: 1 <= period <= 8; 0 <= minute <= 59
      */
     private boolean isMinuteFree(int period, int minute) {
-        return schedule[period][minute];
+        return schedule[period-1][minute];
         /* implementation not shown */ }
 
     public void printPeriod(int period){
-        for (int i = 0; i < schedule[period].length; i++){
-            System.out.println(i + " " + schedule[period][i]);
+        for (int i = 0; i < schedule[period-1].length; i++){
+            System.out.println(i + " " + schedule[period-1][i]);
         }
     }
 
@@ -28,9 +28,15 @@ public class AppointmentBook {
      */
     private void reserveBlock(int period, int startMinute, int duration) {
         for (int i = startMinute; i < startMinute + duration; i++){
-            schedule[period][i] = false;
+            schedule[period-1][i] = false;
         }
         /* implementation not shown */ }
+
+    public void printBlock(int period, int startMinute, int duration){
+        for (int i = startMinute; i < startMinute + duration; i++){
+            System.out.print(schedule[period-1][i]);
+        }
+    }
 
     /**
      * Searches for the first block of duration free minutes during period, as
@@ -41,15 +47,15 @@ public class AppointmentBook {
      * Preconditions: 1 <= period <= 8; 1 <= duration <= 60
      */
     public int findFreeBlock(int period, int duration) {
-        int block = 0;
+        int blockLength = 0;
         for (int i = 0; i<60; i++){
             if (isMinuteFree(period, i)){
-                block ++;
-                if(block == duration){
+                blockLength ++;
+                if(blockLength == duration){
                     return i - duration + 1;
                 }
             }
-            else {block = 0;}
+            else {blockLength = 0;}
         }
         return -1;
         /* to be implemented in part (a) */ }
@@ -64,7 +70,7 @@ public class AppointmentBook {
      */
     public boolean makeAppointment(int startPeriod, int endPeriod, int duration){
         int startDuration;
-        for (int r = startPeriod; r < endPeriod; r++){
+        for (int r = startPeriod; r <= endPeriod; r++){
             startDuration = findFreeBlock(r, duration);
             if (startDuration != 1){
                 reserveBlock(r, startDuration, duration);
